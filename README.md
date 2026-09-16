@@ -1,6 +1,6 @@
 A CLI tool for creating and reviewing flashcards. Currently a work in progress.
 
-Ideas:
+TO DO:
 * Should probably have separate decks / subjects, and a way to pick which one you want. Maybe this can initialize separate databases. 
 * Should probably have a way to mark a card as having different states, like correct / incorrect, etc.
 * Need a study algorithm
