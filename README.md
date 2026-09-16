@@ -11,4 +11,4 @@ TO DO:
 * Each time I do this, I should implement at least one unit test for each new function that is implemented.
 
 UNIT TESTS NEEDED:
-* db - init_subject_db
+* due to refactor of db.py, need to refactor the tests as well

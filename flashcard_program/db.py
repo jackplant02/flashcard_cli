@@ -1,48 +1,43 @@
 import sqlite3
 
-# ==========================================================
-# Functions related to subjects
-# ==========================================================
+DB_NAME = "flashcards_app.db"
 
-SUBJECTS = "subjects.db"
+def get_connection(db_name=DB_NAME):
+    """Return a connection to the database."""
 
-def init_subject_db(db_name=SUBJECTS):
-    """Create the subjects table if it doesn't already exist"""
+    # Create a connection to the database.
+    conn = sqlite3.connect(db_name)
+    # Turn on foreign key enforcement (SQLite disables this feature by default per connection)
+    conn.execute("PRAGMA foreign_keys = ON;")
 
-    with sqlite3.connect(db_name) as conn:
+    return conn
+
+
+def init_db():
+    """Create both tables in a single database file."""
+
+    #open the connection using the function defined above
+    with get_connection() as conn:
         cursor = conn.cursor()
+        
+        # Subjects table
         cursor.execute("""
-        CREATE TABLE IF NOT EXISTS subjects (
-            id INTEGER PRIMARY KEY,
-            subject TEXT NOT NULL,
-            filename TEXT NOT NULL
-        )
-    """)
-    conn.commit()
-
-# ============================================================
-# Functions related to flashcards
-# ============================================================
-
-DB_NAME = "flashcards.db"
-
-def init_db(db_name=DB_NAME):
-    """Create the cards table if it doesn't already exist."""
-
-    # opens a connection to 'flashcards.db' (creates the file if it doesn't exist)
-    # and closes it automatically when done
-    with sqlite3.connect(db_name) as conn:
-        # create a cursor object, which is used to send SQL commands to the database
-        cursor = conn.cursor()
-        # execute sql command (this one creates the 'cards' table, only if it doesn't exist)
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS cards (
-                id INTEGER PRIMARY KEY,
-                front TEXT NOT NULL,
-                back TEXT NOT NULL
+            CREATE TABLE IF NOT EXISTS subjects (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE
             )
         """)
-        # Explicitly commit the changes 
+        
+        # Cards table referencing subjects via foreign key
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS cards (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                subject_id INTEGER NOT NULL,
+                front TEXT NOT NULL,
+                back TEXT NOT NULL,
+                FOREIGN KEY (subject_id) REFERENCES subjects (id) ON DELETE CASCADE
+            )
+        """)
         conn.commit()
 
 
