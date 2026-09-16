@@ -1,10 +1,33 @@
 import sqlite3
 
-# this is the filename where SQLite stores the database
+# ==========================================================
+# Functions related to subjects
+# ==========================================================
+
+SUBJECTS = "subjects.db"
+
+def init_subject_db(db_name=SUBJECTS):
+    """Create the subjects table if it doesn't already exist"""
+
+    with sqlite3.connect(db_name) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS subjects (
+            id INTEGER PRIMARY KEY,
+            subject TEXT NOT NULL,
+            filename TEXT NOT NULL
+        )
+    """)
+    conn.commit()
+
+# ============================================================
+# Functions related to flashcards
+# ============================================================
+
 DB_NAME = "flashcards.db"
 
 def init_db(db_name=DB_NAME):
-    """Create the cards table it doesn't already exist."""
+    """Create the cards table if it doesn't already exist."""
 
     # opens a connection to 'flashcards.db' (creates the file if it doesn't exist)
     # and closes it automatically when done
@@ -40,3 +63,4 @@ def get_all_cards(db_name=DB_NAME):
         cursor = conn.cursor()
         cursor.execute("SELECT id, front, back FROM cards")
         return cursor.fetchall()
+

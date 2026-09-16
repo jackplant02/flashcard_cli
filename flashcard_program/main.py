@@ -2,12 +2,16 @@ from db import add_card, get_all_cards, init_db
 
 def main():
 
+    """
+    TODO: this call will need to be moved down, and some refactoring will
+        need to be done, as we no longer have just one flashcard db.
+    """
     init_db()
 
     print("\nWelcome back!\n")
     print("Pick pick a subject to begin:\n")
     # option to create a new deck
-    print("1: Create a new deck\n")
+    print("(1) Create a new deck\n")
 
     # get all existing subjects
     """
@@ -17,6 +21,7 @@ def main():
 
     # for loop to print out each of the retrieved subjects
     
+    print("Choose an entry from the ")
 
     while True:
         entry = input("Please choose one of the following options: (a)dd a card, (s)tudy cards, or (q)uit: ").strip().lower()
