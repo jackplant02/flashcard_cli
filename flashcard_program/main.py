@@ -5,6 +5,7 @@ def main():
     init_db()
 
     print("\nWelcome back!\n")
+    print("Pick a subject to begin\n")
 
     while True:
         entry = input("Please choose one of the following options: (a)dd a card, (s)tudy cards, or (q)uit: ").strip().lower()
