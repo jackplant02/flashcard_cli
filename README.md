@@ -12,6 +12,3 @@ TO DO:
 
 UNIT TESTS NEEDED:
 * due to refactor of db.py, need to refactor the tests as well
-    * get_connection
-    * init_db
-    * add_subject

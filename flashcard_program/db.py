@@ -13,7 +13,7 @@ def get_connection(db_name=DB_NAME):
     return conn
 
 
-def init_db():
+def init_db(db_name=DB_NAME):
     """Create both tables in a single database file."""
 
     # open the connection using the function defined above
