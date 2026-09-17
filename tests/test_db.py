@@ -1,6 +1,6 @@
 import sqlite3
 import pytest
-from flashcard_program.db import get_connection, init_db, add_subject
+from flashcard_program.db import get_connection, init_db, add_subject, get_all_subjects
 
 @pytest.fixture
 def test_db(tmp_path):
@@ -92,3 +92,22 @@ def test_add_duplicate_subject_raises_integrity_error(test_db):
 
     with pytest.raises(sqlite3.IntegrityError):
         add_subject("Chemistry", db_name=test_db)
+
+# ==========================================================
+# Tests for get_all_subjects
+# ==========================================================
+
+def test_get_all_subjects(test_db):
+    """Verify that all existing subjects are retrieved."""
+    add_subject("Math", db_name=test_db)
+    add_subject("History", db_name=test_db)
+
+    subjects = get_all_subjects(db_name=test_db)
+
+    assert len(subjects) == 2
+    assert "Math" in subjects
+    assert "History" in subjects
+
+def test_get_all_subjects_empty(test_db):
+    """Verify get_all_subjects returns an empty list when no subjects exist."""
+    assert get_all_subjects(db_name=test_db) == []

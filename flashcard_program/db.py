@@ -17,7 +17,7 @@ def init_db(db_name=DB_NAME):
     """Create both tables in a single database file."""
 
     # open the connection using the function defined above
-    with get_connection() as conn:
+    with get_connection(db_name) as conn:
         cursor = conn.cursor()
         
         # Subjects table
@@ -44,14 +44,20 @@ def init_db(db_name=DB_NAME):
 def add_subject(name, db_name=DB_NAME):
     """Add a subject and return its assigned id"""
 
-    with get_connection() as conn:
+    with get_connection(db_name) as conn:
 
         cursor = conn.cursor()
         cursor.execute("INSERT INTO subjects (name) VALUES (?)", (name,))
         conn.commit()
         return cursor.lastrowid
 
+def get_all_subjects(db_name=DB_NAME):
+    """Return all subjects currently in the database"""
 
+    with get_connection(db_name) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM subjects")
+        return [row[0] for row in cursor.fetchall()]
 
 
 

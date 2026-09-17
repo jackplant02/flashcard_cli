@@ -1,4 +1,4 @@
-from db import add_card, get_all_cards, init_db
+from db import init_db, get_all_subjects, add_subject
 
 def main():
 
@@ -7,19 +7,18 @@ def main():
     print("\nWelcome back!\n")
     print("Pick pick a subject to begin:\n")
     # option to create a new deck
-    print("(1) Create a new deck\n")
+    print("(1) Create New Deck")
 
     # get all existing subjects
-    """
-    TODO: refactor db.py. Create a function that fetches all subjects from the database
-        and returns them.
-    """ 
+    subjects = get_all_subjects()
 
-    """
-    TODO: for loop to print out each of the retrieved subjects
-    """
-    
+    for i, subject in enumerate(subjects):
+        print(f"({i+2}) {subject}")
 
+    selection = input("\nPlease enter your selection: ").strip()
+
+    if selection == "1":
+        add_subject(input().strip())
 
     while True:
         entry = input("Please choose one of the following options: (a)dd a card, (s)tudy cards, or (q)uit: ").strip().lower()
