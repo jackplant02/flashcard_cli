@@ -16,7 +16,7 @@ def get_connection(db_name=DB_NAME):
 def init_db():
     """Create both tables in a single database file."""
 
-    #open the connection using the function defined above
+    # open the connection using the function defined above
     with get_connection() as conn:
         cursor = conn.cursor()
         
@@ -28,7 +28,7 @@ def init_db():
             )
         """)
         
-        # Cards table referencing subjects via foreign key
+        # initialize the 'cards' table with a foreign key link to 'subjects'
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS cards (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,21 +41,23 @@ def init_db():
         conn.commit()
 
 
-def add_card(front, back, db_name=DB_NAME):
-    """Add a card to the database using parameterized queries."""
-    with sqlite3.connect(db_name) as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO cards (front, back) VALUES (?, ?)",
-            # pass the values as a tuple matching the order of the '?' placeholders above.
-            (front, back)
-        )
-        conn.commit()
+def add_subject(name, db_name=DB_NAME):
+    """Add a subject and return its assigned id"""
 
-def get_all_cards(db_name=DB_NAME):
-    """Get all cards from the database."""
-    with sqlite3.connect(db_name) as conn:
+    with get_connection() as conn:
+
         cursor = conn.cursor()
-        cursor.execute("SELECT id, front, back FROM cards")
-        return cursor.fetchall()
+        cursor.execute("INSERT INTO subjects (name) VALUES (?)", (name,))
+        conn.commit()
+        return cursor.lastrowid
+
+
+
+
+
+
+
+
+
+
 
