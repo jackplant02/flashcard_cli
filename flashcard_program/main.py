@@ -1,27 +1,44 @@
-from db import init_db, get_all_subjects, add_subject
+from db import init_db, get_all_subjects, add_subject, delete_subject
 
 def main():
 
     init_db()
 
     print("\nWelcome back!\n")
-    # option to create a new deck
-    print("(1) Create New Deck")
-    print("(2) Delete Existing Deck")
 
-    # get all existing subjects
-    subjects = get_all_subjects()
+    while True:
+        # option to create a new deck
+        print("(1) Create New Deck")
+        print("(2) Delete Existing Deck")
 
-    for i, subject in enumerate(subjects):
-        print(f"({i+3}) {subject}")
+        # get all existing subjects
+        subjects = get_all_subjects()
+        valid_selections = {}
 
-    selection = input("\nPlease select an option to begin: ").strip()
+        for i, subject in enumerate(subjects):
+            print(f"({i+3}) {subject}")
+            valid_selections[str(i+3)] = subject
 
-    if selection == "1":
-        add_subject(input("Enter a name for your new deck: ").strip())
+        selection = input("\nPlease select an option to begin: ").strip()
 
-    elif selection == "2":
-        print("Which deck would you like to ")
+        if selection == "1":
+            add_subject(input("Enter a name for your new deck: ").strip())
+
+        elif selection == "2":
+            delete = input("\nWhich deck would you like to remove? \nPlease select from the options above or press 'Enter' to cancel: ").strip()
+
+            while delete not in valid_selections:
+                if delete == "":
+                    break
+                delete = input("\nInvalid selection. \nPlease select from the options above or press 'Enter' to cancel: ").strip()
+
+            to_delete = valid_selections[delete]
+            confirm = input(f"\nAre you sure you want to delete '{to_delete}'? ([y]/n): ").strip().lower()
+
+            if confirm == "y":
+                delete_subject(delete)
+                print(f"Deleted '{to_delete}'")
+
 
 
     while True:

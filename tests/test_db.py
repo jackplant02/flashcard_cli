@@ -1,6 +1,6 @@
 import sqlite3
 import pytest
-from flashcard_program.db import get_connection, init_db, add_subject, get_all_subjects
+from flashcard_program.db import get_connection, init_db, add_subject, get_all_subjects, delete_subject
 
 @pytest.fixture
 def test_db(tmp_path):
@@ -92,6 +92,18 @@ def test_add_duplicate_subject_raises_integrity_error(test_db):
 
     with pytest.raises(sqlite3.IntegrityError):
         add_subject("Chemistry", db_name=test_db)
+
+# ==========================================================
+# Tests for delete_subject
+# ==========================================================
+
+def test_delete_subject_removes_row(test_db):
+    """Verify delete_subject removes the subject from the database."""
+    add_subject("Biology", db_name=test_db)
+
+    delete_subject("Biology", db_name=test_db)
+
+    assert get_all_subjects(db_name=test_db) == []
 
 # ==========================================================
 # Tests for get_all_subjects

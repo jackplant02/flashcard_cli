@@ -42,7 +42,7 @@ def init_db(db_name=DB_NAME):
 
 
 def add_subject(name, db_name=DB_NAME):
-    """Add a subject and return its assigned id"""
+    """Add a subject and return its assigned id."""
 
     with get_connection(db_name) as conn:
 
@@ -50,6 +50,15 @@ def add_subject(name, db_name=DB_NAME):
         cursor.execute("INSERT INTO subjects (name) VALUES (?)", (name,))
         conn.commit()
         return cursor.lastrowid
+
+def delete_subject(name, db_name=DB_NAME):
+    """Delete a subject and all associated cards."""
+
+    with get_connection(db_name) as conn:
+
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM subjects WHERE name = ?", (name,))
+        conn.commit()
 
 def get_all_subjects(db_name=DB_NAME):
     """Return all subjects currently in the database"""
